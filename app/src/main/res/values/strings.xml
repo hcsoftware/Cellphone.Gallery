@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Cellphone Gallery</string>
+    <string name="legals">Legales</string>
+    <string name="dialog_close">CLOSE</string>
+</resources>
