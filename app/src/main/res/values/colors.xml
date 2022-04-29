@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Item/CardView colors-->
+    <color name="card_background">@android:color/white</color>
+    <color name="card_view_border">@color/teal_700</color>
+    <color name="card_title">@color/black</color>
+    <color name="card_subtitle">@color/black</color>
+    <color name="card_description">@color/black</color>
+
 </resources>

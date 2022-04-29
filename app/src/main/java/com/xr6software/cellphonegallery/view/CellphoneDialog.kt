@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.text.HtmlCompat
 import com.squareup.picasso.Picasso
 import com.xr6software.cellphonegallery.R
 import com.xr6software.cellphonegallery.model.CellphoneDetail
@@ -36,7 +37,8 @@ class CellphoneDialog(context : Context) {
         val buttonNext = view.findViewById<ImageButton>(R.id.dialog_button_next)
         text.movementMethod = ScrollingMovementMethod()
 
-        text.setText(cellphoneDetail.legal)
+        text.setText(HtmlCompat.fromHtml(cellphoneDetail.legal, 0))
+
         loadImagesOnCarousel(imageIndex)
 
         builder.setView(view)
@@ -47,7 +49,7 @@ class CellphoneDialog(context : Context) {
         button.setOnClickListener {
             builder.dismiss()
         }
-        builder.setCanceledOnTouchOutside(false)
+        builder.setCanceledOnTouchOutside(true)
         builder.show()
         builder.window?.setLayout( LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         builder.window?.setIcon(R.drawable.ic_launcher_foreground)

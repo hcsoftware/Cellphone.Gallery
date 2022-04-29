@@ -3,13 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_bright"/>
-
-
     <LinearLayout
+        android:background="#f5f5f5"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -30,7 +25,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_bright"/>
+            android:background="@color/card_view_border"/>
 
         <LinearLayout
             android:layout_margin="10dp"
@@ -39,35 +34,31 @@
             android:layout_width="0dp"
             android:layout_height="match_parent">
 
-                <TextView
-                    android:textSize="22sp"
-                    android:id="@+id/item_textview_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="cellphone name"/>
+            <TextView
+                android:id="@+id/item_textview_title"
+                style="@style/ItemCellphoneText.Title"
+                android:text="Cellphone"/>
 
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:textSize="18sp"
-                    android:id="@+id/item_textview_implements"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="implements tag"/>
+            <TextView
+                style="@style/ItemCellphoneText"
+                android:id="@+id/item_textview_implements"
+                android:text="implements_tag"/>
 
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:textSize="16sp"
-                    android:id="@+id/item_textview_toptag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="toptag"/>
+            <TextView
+                style="@style/ItemCellphoneText"
+                android:id="@+id/item_textview_toptag"
+                android:text="toptag"
+                android:background="#a92865"/>
 
 
         </LinearLayout>
 
-
-
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/card_view_border"/>
 
 
 </androidx.cardview.widget.CardView>

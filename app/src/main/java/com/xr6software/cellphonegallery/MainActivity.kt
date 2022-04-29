@@ -19,6 +19,8 @@ import com.xr6software.cellphonegallery.view.AdapterCellphone
 import com.xr6software.cellphonegallery.view.AdapterCellphoneClickListener
 import com.xr6software.cellphonegallery.view.CellphoneDialog
 import com.xr6software.cellphonegallery.viewmodel.ActivityViewModel
+import java.net.URLDecoder
+import java.nio.charset.Charset
 
 
 class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
@@ -38,6 +40,9 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         val view : View = viewBinding.root
         setContentView(view)
+
+        //Hide ActionBar Title
+        supportActionBar?.title = resources.getString(R.string.topbar_text)
 
         //Init adapter and links it view recycler view
         cellphoneAdapter = AdapterCellphone(this)
@@ -59,6 +64,7 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
     fun setObservers() {
         viewModel.getCellphones().observe(this, Observer {
             cellphoneAdapter.updateDataOnView(it)
+            //println(String(response.encodeToByteArray(), Charsets.UTF_16LE))
         })
 
         viewModel.getLoading().observe(this, Observer {
