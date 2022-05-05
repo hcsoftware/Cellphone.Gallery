@@ -1,11 +1,10 @@
 package com.xr6software.cellphonegallery
 
+import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.view.Gravity
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -14,13 +13,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.xr6software.cellphonegallery.databinding.ActivityMainBinding
 import com.xr6software.cellphonegallery.model.Cellphone
-import com.xr6software.cellphonegallery.model.CellphoneDetail
 import com.xr6software.cellphonegallery.view.AdapterCellphone
 import com.xr6software.cellphonegallery.view.AdapterCellphoneClickListener
 import com.xr6software.cellphonegallery.view.CellphoneDialog
 import com.xr6software.cellphonegallery.viewmodel.ActivityViewModel
-import java.net.URLDecoder
-import java.nio.charset.Charset
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
         val view : View = viewBinding.root
         setContentView(view)
 
-        //Hide ActionBar Title
+        //Set ActionBar Title
         supportActionBar?.title = resources.getString(R.string.topbar_text)
 
         //Init adapter and links it view recycler view
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
         //make main call to get cellphones list
         viewModel.getCellphonesFromAPI(this)
 
-        //as the names says, set the different observers to the viewmodel objects
+        //Set the different observers to the viewmodel
         setObservers()
 
     }
@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
     fun setObservers() {
         viewModel.getCellphones().observe(this, Observer {
             cellphoneAdapter.updateDataOnView(it)
-            //println(String(response.encodeToByteArray(), Charsets.UTF_16LE))
         })
 
         viewModel.getLoading().observe(this, Observer {
@@ -74,10 +73,45 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
         viewModel.getCellphone().observe(this, Observer {
             cellphoneDialog.showDialog(it)
         })
+        viewModel.getApiConnectionError().observe(this, Observer {
+            if (it) {
+                CoroutineScope(Main).launch {
+                    showErrorAndFinish()
+                }
+            }
+        })
+    }
+
+    private suspend fun showErrorAndFinish()  {
+        var toast = Toast.makeText(applicationContext, resources.getString(R.string.error_loading), Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
+        delay(3500)
+        finish()
     }
 
     override fun onClick(cellphone: Cellphone, position: Int) {
         viewModel.getCellphoneByIdFromAPI(this, cellphone, position)
+    }
+
+    override fun onBackPressed() {
+        showQuitDialog()
+    }
+
+    fun showQuitDialog(){
+        val dialogBuilder = AlertDialog.Builder(this)
+
+        dialogBuilder.setMessage(R.string.quit_dialog_msg)
+            .setCancelable(false)
+            .setPositiveButton(R.string.quit_dialog_positive, DialogInterface.OnClickListener {
+                    dialog, id -> finish()
+            })
+            .setNegativeButton(R.string.quit_dialog_negative, DialogInterface.OnClickListener {
+                    dialog, id -> dialog.cancel()
+            })
+        val alert = dialogBuilder.create()
+        alert.setTitle(R.string.quit_dialog_title)
+        alert.show()
     }
 
 }

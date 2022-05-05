@@ -3,4 +3,9 @@
     <string name="topbar_text">Select a phone:</string>
     <string name="legals">Legales</string>
     <string name="dialog_close">CLOSE</string>
+    <string name="error_loading">Error loading data. Please check your internet connection and try again. Bye!</string>
+    <string name="quit_dialog_title">Cellphone Gallery</string>
+    <string name="quit_dialog_msg">Do you want to close this application ?</string>
+    <string name="quit_dialog_positive">Proceed</string>
+    <string name="quit_dialog_negative">Cancel</string>
 </resources>

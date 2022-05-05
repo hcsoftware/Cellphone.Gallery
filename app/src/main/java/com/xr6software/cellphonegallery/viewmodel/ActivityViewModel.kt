@@ -18,6 +18,7 @@ class ActivityViewModel : ViewModel() {
     private var cellphones = MutableLiveData<ArrayList<Cellphone>>()
     private var isLoading : MutableLiveData<Boolean> = MutableLiveData()
     private var cellphone : MutableLiveData<CellphoneDetail> = MutableLiveData()
+    private var apiConnectionError : MutableLiveData<Boolean> = MutableLiveData()
 
     fun getCellphonesFromAPI(context : Context){
 
@@ -26,11 +27,13 @@ class ActivityViewModel : ViewModel() {
             override fun onSucces(result: String?) {
                 parseResponseToArray(result!!)
                 isLoading.value = false;
+                apiConnectionError.value = false
             }
 
             override fun onFailure(exception: Exception) {
                 //Show error message
                 isLoading.value = false;
+                apiConnectionError.value = true
             }
         })
 
@@ -44,7 +47,7 @@ class ActivityViewModel : ViewModel() {
             }
 
             override fun onFailure(exception: Exception) {
-                //Show error message
+                //println(exception)
             }
         })
 
@@ -68,6 +71,10 @@ class ActivityViewModel : ViewModel() {
 
     fun getCellphone() : LiveData<CellphoneDetail> {
         return cellphone
+    }
+
+    fun getApiConnectionError() : LiveData<Boolean> {
+        return apiConnectionError
     }
 
 }
