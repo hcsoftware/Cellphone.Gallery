@@ -15,3 +15,7 @@ Implements:<br></p>
 <li>Use custom fonts in Views</li>
 </ul>
 <p> This app downloads a cellphone list from an API server, and gets the cellphone details from a second API server. Note that the second API always returns the same data.</p>
+
+<img src="https://user-images.githubusercontent.com/100162759/167012377-ff1a2561-2cfa-42a8-8c60-0de20f7870c8.png" width=30% height=30%>
+<img src="https://user-images.githubusercontent.com/100162759/167012385-663ea53b-10f5-4447-b232-8c2c961fe91e.png" width=30% height=30%>
+
