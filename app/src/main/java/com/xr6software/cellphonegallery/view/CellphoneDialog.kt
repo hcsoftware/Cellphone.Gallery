@@ -72,7 +72,9 @@ class CellphoneDialog @Inject constructor(@ActivityContext val context: Context)
             builder.dismiss()
             isShown = false
         }
+        //builder.setC
         builder.setCanceledOnTouchOutside(false)
+        builder.setCancelable(false)
         builder.show()
         isShown = true
         builder.window?.setLayout(
