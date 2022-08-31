@@ -11,14 +11,28 @@ import com.squareup.picasso.Picasso
 import com.xr6software.cellphonegallery.R
 import com.xr6software.cellphonegallery.model.CellphoneDetail
 import com.xr6software.cellphonegallery.model.Image
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ActivityContext
+import javax.inject.Inject
 
-//This class inflates an alert dialog with the specific info of the cellphone.
-class CellphoneDialog(context : Context) {
+/**
+@author Hernán Carrera
+@version 1.0
+@param context via Hilt injection.
+This is class extends Recycler view. Adapter to parse data from the cellphones list to the listview items
+This class inflates an alert dialog with the specific info of the cellphone.
+ */
 
-    val context : Context = context
-    lateinit var  image : ImageView;
-    lateinit var imagesList : ArrayList<Image>
-    var imageIndex : Int = 0
+@Module
+@InstallIn(ActivityComponent::class)
+class CellphoneDialog @Inject constructor(@ActivityContext val context: Context) {
+
+    lateinit var image: ImageView;
+    lateinit var imagesList: ArrayList<Image>
+    var imageIndex: Int = 0
+    var isShown : Boolean = false
 
     fun showDialog(cellphoneDetail: CellphoneDetail) {
 
@@ -29,8 +43,8 @@ class CellphoneDialog(context : Context) {
 
         var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val view : View = inflater.inflate(R.layout.dialog_cellphone_detail,null)
-        val  button = view.findViewById<Button>(R.id.dialog_button)
+        val view: View = inflater.inflate(R.layout.dialog_cellphone_detail, null)
+        val button = view.findViewById<Button>(R.id.dialog_button)
         image = view.findViewById<ImageView>(R.id.dialog_imageView)
         val text = view.findViewById<TextView>(R.id.dialog_textView)
         val buttonBack = view.findViewById<ImageButton>(R.id.dialog_button_back)
@@ -43,22 +57,35 @@ class CellphoneDialog(context : Context) {
 
         builder.setView(view)
 
-        buttonBack.setOnClickListener { if ((imageIndex - 1) >= 0) {loadImagesOnCarousel(--imageIndex)} }
-        buttonNext.setOnClickListener { if ((imageIndex + 1) < imagesList.size) {loadImagesOnCarousel(++imageIndex)}}
+        buttonBack.setOnClickListener {
+            if ((imageIndex - 1) >= 0) {
+                loadImagesOnCarousel(--imageIndex)
+            }
+        }
+        buttonNext.setOnClickListener {
+            if ((imageIndex + 1) < imagesList.size) {
+                loadImagesOnCarousel(++imageIndex)
+            }
+        }
 
         button.setOnClickListener {
             builder.dismiss()
+            isShown = false
         }
-        builder.setCanceledOnTouchOutside(true)
+        builder.setCanceledOnTouchOutside(false)
         builder.show()
-        builder.window?.setLayout( LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        isShown = true
+        builder.window?.setLayout(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
         builder.window?.setIcon(R.drawable.ic_launcher_foreground)
     }
 
     fun loadImagesOnCarousel(index: Int) {
 
         Picasso.get().load(imagesList.get(index).thumbnailUrl)
-            .resize(150,150)
+            .resize(150, 150)
             .error(com.google.android.material.R.drawable.mtrl_ic_error)
             .into(image)
 

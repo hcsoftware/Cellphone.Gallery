@@ -1,6 +1,5 @@
 package com.xr6software.cellphonegallery.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,21 +8,32 @@ import com.xr6software.cellphonegallery.model.Cellphone
 import com.xr6software.cellphonegallery.model.CellphoneDetail
 import com.xr6software.cellphonegallery.network.APIService
 import com.xr6software.cellphonegallery.network.Callback
-import java.lang.Exception
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-//This class handles the data from the activity so it's separated from the view.
-//the main methods requests to the api service the responses, format the results, and then save the data in the liveData Objects.
-class ActivityViewModel : ViewModel() {
+
+/**
+@author Hernán Carrera
+@version 1.0
+This class handles the data from the activity so it's separated from the view.
+The main methods requests to the api service the responses, format the results, and then save the data in the liveData Objects.
+ */
+
+@HiltViewModel
+class ActivityViewModel @Inject constructor(private val apiService: APIService) : ViewModel() {
 
     private var cellphones = MutableLiveData<ArrayList<Cellphone>>()
-    private var isLoading : MutableLiveData<Boolean> = MutableLiveData()
-    private var cellphone : MutableLiveData<CellphoneDetail> = MutableLiveData()
-    private var apiConnectionError : MutableLiveData<Boolean> = MutableLiveData()
+    private var isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    private var cellphone: MutableLiveData<CellphoneDetail> = MutableLiveData()
+    private var apiConnectionError: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getCellphonesFromAPI(context : Context){
+    /**
+     * This method calls the Api Service for the Cellphones List and load the info in the liveData Cellphone List via parseResponse method.
+     */
+    fun getCellphonesFromAPI() {
 
         isLoading.value = true;
-        APIService().getCellphones(context, object : Callback<String>{
+        apiService.getCellphones(object : Callback<String> {
             override fun onSucces(result: String?) {
                 parseResponseToArray(result!!)
                 isLoading.value = false;
@@ -31,7 +41,6 @@ class ActivityViewModel : ViewModel() {
             }
 
             override fun onFailure(exception: Exception) {
-                //Show error message
                 isLoading.value = false;
                 apiConnectionError.value = true
             }
@@ -39,41 +48,47 @@ class ActivityViewModel : ViewModel() {
 
     }
 
-    fun getCellphoneByIdFromAPI(context : Context, cellphone: Cellphone, position: Int) {
+    /**
+     * This method calls the Api Service for the Cellphone Details from and id an a cellphone obj. Then load the info in the liveData Cellphone List via parseResponse method.
+     * @param cellphone cellphone object for request.
+     * @param position cellphone Id for request.
+     */
+    fun getCellphoneByIdFromAPI(cellphone: Cellphone, position: Int) {
 
-        APIService().getCellphoneById(context, cellphone, position , object : Callback<String>{
+        apiService.getCellphoneById(cellphone, position, object : Callback<String> {
             override fun onSucces(result: String?) {
                 parseResponseToCellphone(result!!)
             }
 
             override fun onFailure(exception: Exception) {
-                //println(exception)
+                println(exception)
             }
         })
 
     }
 
     fun parseResponseToArray(strResponse: String) {
-        cellphones.value = Gson().fromJson(strResponse, Array<Cellphone>::class.java).toList() as ArrayList<Cellphone>
+        cellphones.value = Gson().fromJson(strResponse, Array<Cellphone>::class.java)
+            .toList() as ArrayList<Cellphone>
     }
 
     fun parseResponseToCellphone(strResponse: String) {
-        cellphone.value = Gson().fromJson(strResponse,CellphoneDetail::class.java)
+        cellphone.value = Gson().fromJson(strResponse, CellphoneDetail::class.java)
     }
 
-    fun getCellphones() : LiveData<ArrayList<Cellphone>> {
+    fun getCellphones(): LiveData<ArrayList<Cellphone>> {
         return cellphones
     }
 
-    fun getLoading() : MutableLiveData<Boolean> {
+    fun getLoading(): MutableLiveData<Boolean> {
         return isLoading
     }
 
-    fun getCellphone() : LiveData<CellphoneDetail> {
+    fun getCellphone(): LiveData<CellphoneDetail> {
         return cellphone
     }
 
-    fun getApiConnectionError() : LiveData<Boolean> {
+    fun getApiConnectionError(): LiveData<Boolean> {
         return apiConnectionError
     }
 

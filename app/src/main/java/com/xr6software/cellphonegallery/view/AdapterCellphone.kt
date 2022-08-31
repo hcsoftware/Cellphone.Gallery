@@ -10,7 +10,13 @@ import com.squareup.picasso.Picasso
 import com.xr6software.cellphonegallery.R
 import com.xr6software.cellphonegallery.model.Cellphone
 
-//This is class is an adapter to parse data from the cellphones list to the listview items
+
+/**
+@author Hernán Carrera
+@version 1.0
+This is class extends Recycler view. Adapter to parse data from the cellphones list to the listview items
+ */
+
 class AdapterCellphone(val adapterCellphoneClickListener: AdapterCellphoneClickListener) : RecyclerView.Adapter<AdapterCellphone.ViewHolder>() {
 
     var cellphoneList = ArrayList<Cellphone>()
