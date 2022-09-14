@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
-import com.squareup.picasso.Picasso
+import coil.load
 import com.xr6software.cellphonegallery.R
 import com.xr6software.cellphonegallery.model.CellphoneDetail
 import com.xr6software.cellphonegallery.model.Image
@@ -43,7 +43,7 @@ class CellphoneDialog @Inject constructor(@ActivityContext val context: Context)
 
         var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val view: View = inflater.inflate(R.layout.dialog_cellphone_detail, null)
+        val view: View = inflater.inflate(R.layout.dialog_cellphone, null)
         val button = view.findViewById<Button>(R.id.dialog_button)
         image = view.findViewById<ImageView>(R.id.dialog_imageView)
         val text = view.findViewById<TextView>(R.id.dialog_textView)
@@ -72,7 +72,7 @@ class CellphoneDialog @Inject constructor(@ActivityContext val context: Context)
             builder.dismiss()
             isShown = false
         }
-        //builder.setC
+
         builder.setCanceledOnTouchOutside(false)
         builder.setCancelable(false)
         builder.show()
@@ -84,14 +84,14 @@ class CellphoneDialog @Inject constructor(@ActivityContext val context: Context)
         builder.window?.setIcon(R.drawable.ic_launcher_foreground)
     }
 
-    fun loadImagesOnCarousel(index: Int) {
+    private fun loadImagesOnCarousel(index: Int) {
 
-        Picasso.get().load(imagesList.get(index).thumbnailUrl)
-            .resize(150, 150)
-            .error(com.google.android.material.R.drawable.mtrl_ic_error)
-            .into(image)
+        image.load(imagesList[index].thumbnailUrl) {
+            size(150,150)
+            crossfade(700)
+            error(com.google.android.material.R.drawable.mtrl_ic_error)
+        }
 
     }
-
 
 }

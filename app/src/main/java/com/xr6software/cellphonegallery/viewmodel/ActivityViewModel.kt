@@ -54,14 +54,16 @@ class ActivityViewModel @Inject constructor(private val apiService: APIService) 
      * @param position cellphone Id for request.
      */
     fun getCellphoneByIdFromAPI(cellphone: Cellphone, position: Int) {
-
+        isLoading.value = true;
         apiService.getCellphoneById(cellphone, position, object : Callback<String> {
             override fun onSucces(result: String?) {
                 parseResponseToCellphone(result!!)
+                isLoading.value = false;
             }
 
             override fun onFailure(exception: Exception) {
                 println(exception)
+                isLoading.value = false;
             }
         })
 

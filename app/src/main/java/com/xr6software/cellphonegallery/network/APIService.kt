@@ -1,15 +1,22 @@
 package com.xr6software.cellphonegallery.network
 
 import android.content.Context
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import com.xr6software.cellphonegallery.model.Cellphone
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import org.json.JSONArray
+import org.json.JSONObject
 import javax.inject.Inject
 
 /**
@@ -24,6 +31,8 @@ import javax.inject.Inject
 @Module
 class APIService @Inject constructor(@ApplicationContext val context: Context) {
 
+    private val requestQueue = Volley.newRequestQueue(context)
+
     /**
      * This method returns a string response (Json) with the cellphone List from the Api web service.
      * @param callback to return response.
@@ -31,30 +40,18 @@ class APIService @Inject constructor(@ApplicationContext val context: Context) {
      */
     fun getCellphones(callback: Callback<String>) {
 
-        var request: RequestQueue = Volley.newRequestQueue(context)
         val url = "https://61967289af46280017e7e0c0.mockapi.io/devices"
-
-        val stringRequest: StringRequest = StringRequest(
-            Request.Method.GET,
+        val jsonArrayRequest = JsonArrayRequest(
             url,
-            { response ->
-                callback.onSucces(fixUnicode(response))
+            { response: JSONArray ->
+                callback.onSucces(response.toString())
             },
             {
                 callback.onFailure(it)
             }
-
         )
-        request.add(stringRequest)
-    }
+        requestQueue.add(jsonArrayRequest)
 
-    /**
-     * This method fix unicode problem, the Api doesn't specify the right Unicode.
-     * @param response String to replace wrong chars.
-     * @return String.
-     */
-    private fun fixUnicode(response: String): String {
-        return response.toString().replace("Ã³", "ó").replace("Ã©", "é")
     }
 
     /**
@@ -69,20 +66,17 @@ class APIService @Inject constructor(@ApplicationContext val context: Context) {
         position: Int,
         callback: Callback<String>
     ) {
-
-        var request: RequestQueue = Volley.newRequestQueue(context)
         val url = "https://61967289af46280017e7e0c0.mockapi.io/devices/$position"
-        val stringRequest: StringRequest = StringRequest(
-
-            Request.Method.GET, url,
+        val request= JsonObjectRequest(
+            url,
             { response ->
-                callback.onSucces(response)
+                callback.onSucces(response.toString())
             },
             {
                 callback.onFailure(it)
-            })
-        request.add(stringRequest)
-
+            }
+        )
+        requestQueue.add(request)
     }
 
 }

@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
         setObservers()
     }
 
-    fun setObservers() {
+    private fun setObservers() {
         viewModel.getCellphones().observe(this, Observer {
             cellphoneAdapter.updateDataOnView(it)
         })
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
         showQuitDialog()
     }
 
-    fun showQuitDialog() {
+    private fun showQuitDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
 
         dialogBuilder.setMessage(R.string.quit_dialog_msg)

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import coil.load
 import com.xr6software.cellphonegallery.R
 import com.xr6software.cellphonegallery.model.Cellphone
 
@@ -37,9 +37,7 @@ class AdapterCellphone(val adapterCellphoneClickListener: AdapterCellphoneClickL
         holder.textViewName.text = cellphone.name
         holder.textViewDesc.text = cellphone.installmentsTag
         holder.textViewOther.text = cellphone.topTag
-        Picasso.get().load(cellphone.mainImage.url)
-            .resize(100,100)
-            .into(holder.imgViewCellphone)
+        holder.imgViewCellphone.load(cellphone.mainImage.url)
         holder.itemView.setOnClickListener {
             adapterCellphoneClickListener.onClick(cellphone, position)
         }
