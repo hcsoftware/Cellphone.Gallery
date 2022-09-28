@@ -51,7 +51,7 @@ class CellphoneDialog @Inject constructor(@ActivityContext val context: Context)
         val buttonNext = view.findViewById<ImageButton>(R.id.dialog_button_next)
         text.movementMethod = ScrollingMovementMethod()
 
-        text.setText(HtmlCompat.fromHtml(cellphoneDetail.legal, 0))
+        text.text = HtmlCompat.fromHtml(cellphoneDetail.legal, 0)
 
         loadImagesOnCarousel(imageIndex)
 

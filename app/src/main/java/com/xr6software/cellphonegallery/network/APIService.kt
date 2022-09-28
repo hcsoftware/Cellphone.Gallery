@@ -1,22 +1,15 @@
 package com.xr6software.cellphonegallery.network
 
 import android.content.Context
-import android.widget.Toast
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
 import com.xr6software.cellphonegallery.model.Cellphone
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.json.JSONArray
-import org.json.JSONObject
 import javax.inject.Inject
 
 /**
