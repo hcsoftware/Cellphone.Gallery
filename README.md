@@ -19,11 +19,10 @@ Implements:<br></p>
 <li>Desing patterns like repository, adapter, singleton</li>
 </ul>
 
-</ul>
-<p> In this project you migth find UI implements like:<p>
+<p> In this project you might find UI implements like:<p>
 <ul>
 <li>Add a custom shape background to a custom dialog</li>
-<li>Set up different styles in themes file and costumize the views</li>
+<li>Set up different styles in themes file and customize the views</li>
 <li>Create the app icon using the  Image asset creator from the android studio</li>
 <li>Use custom fonts in Views</li>
 </ul>
