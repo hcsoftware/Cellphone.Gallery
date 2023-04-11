@@ -1,4 +1,4 @@
-package com.xr6software.cellphonegallery.view
+package com.xr6software.cellphonegallery.ui.main.dialogs
 
 import android.content.Context
 import android.text.method.ScrollingMovementMethod
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
 import coil.load
 import com.xr6software.cellphonegallery.R
-import com.xr6software.cellphonegallery.model.CellphoneDetail
+import com.xr6software.cellphonegallery.model.Cellphone
 import com.xr6software.cellphonegallery.model.Image
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -34,9 +34,9 @@ class CellphoneDialog @Inject constructor(@ActivityContext val context: Context)
     var imageIndex: Int = 0
     var isShown : Boolean = false
 
-    fun showDialog(cellphoneDetail: CellphoneDetail) {
+    fun showDialog(cellphone: Cellphone) {
 
-        imagesList = cellphoneDetail.images
+        imagesList = cellphone.imagesDetail
 
         val builder = AlertDialog.Builder(context, androidx.appcompat.R.style.AlertDialog_AppCompat)
             .create()
@@ -51,7 +51,7 @@ class CellphoneDialog @Inject constructor(@ActivityContext val context: Context)
         val buttonNext = view.findViewById<ImageButton>(R.id.dialog_button_next)
         text.movementMethod = ScrollingMovementMethod()
 
-        text.text = HtmlCompat.fromHtml(cellphoneDetail.legal, 0)
+        text.text = HtmlCompat.fromHtml(cellphone.legal, 0)
 
         loadImagesOnCarousel(imageIndex)
 

@@ -1,40 +1,43 @@
 package com.xr6software.cellphonegallery.model
 
-import java.io.Serializable
-import java.util.*
+import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 
-//Data classes
 data class Cellphone (
-
-    val name: String = "",
-    val installmentsTag: String = "",
-    val topTag: String = "",
-    val mainImage: MainImage = MainImage(),
-
-) : Serializable
-
-data class CellphoneDetail(
-
-    val id: String,
-    val brand: String,
     val name: String,
+    @SerializedName("installmentsTag")
+    val discountTag: String?,
+    @SerializedName("topTag")
+    val promotionTag: String?,
+    @SerializedName("mainImage")
+    val image: MainImage,
     val legal: String,
-    val images: ArrayList<Image>,
-    val mainImage: MainImage
-) : Serializable
-
-data class  Image(
-    val alternativeText : String = "",
-    val caption : String = "" ,
-    val  width : Int = 0,
-    val height : Int = 0,
-    val  url : String = "",
-    val thumbnailUrl : String =""
-) : Serializable
+    val processor: String,
+    val internalStorage: String,
+    @SerializedName("images")
+    val imagesDetail: ArrayList<Image>
+)
 
 data class MainImage (
-    val url: String = "",
-) : Serializable
+    @SerializedName("thumbnailUrl")
+    val url: String,
+)
+
+data class  Image(
+    val alternativeText : String,
+    val url : String,
+    val thumbnailUrl : String
+)
+
+fun parseResponseToCellphoneList(response: String): List<Cellphone> =
+    Gson().fromJson(response, Array<Cellphone>::class.java).toList()
+
+fun parseResponseToCellphone(response: String): Cellphone =
+    Gson().fromJson(response, Cellphone::class.java)
+
+
+
+
 
 
 

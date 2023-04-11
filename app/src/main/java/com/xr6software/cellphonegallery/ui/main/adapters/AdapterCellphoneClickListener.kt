@@ -1,4 +1,4 @@
-package com.xr6software.cellphonegallery.view
+package com.xr6software.cellphonegallery.ui.main.adapters
 
 import com.xr6software.cellphonegallery.model.Cellphone
 

@@ -17,10 +17,13 @@
         <entry key="..\:/Users/herna/Downloads/Projects/CellphoneGallery/app/src/main/res/layout/item_cellphone.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/herna/Downloads/Projects/CellphoneGallery/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.196" />
         <entry key="..\:/Users/herna/Downloads/Projects/CellphoneGallery/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.196" />
+        <entry key="..\:/Users/herna/android_projects/Cellphone.Gallery/app/src/main/res/layout/activity_main.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/herna/android_projects/Cellphone.Gallery/app/src/main/res/layout/dialog_cellphone.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/herna/android_projects/Cellphone.Gallery/app/src/main/res/layout/item_cellphone.xml" value="0.27291666666666664" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="9" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
