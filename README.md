@@ -16,7 +16,7 @@ Implements:<br></p>
 <li>Gson library to handle JSON objects</li>
 <li>Coil library to load Images. This library uses coroutines</li>
 <li>DiffUtil in RecyclerView</li>
-<li>Desing patterns like repository, adapter, singleton</li>
+<li>Design patterns like repository, adapter, singleton</li>
 </ul>
 
 <p> In this project you might find UI implements like:<p>
