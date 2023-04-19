@@ -14,7 +14,6 @@ import com.xr6software.cellphonegallery.R
 import com.xr6software.cellphonegallery.databinding.ActivityMainBinding
 import com.xr6software.cellphonegallery.model.Cellphone
 import com.xr6software.cellphonegallery.ui.main.adapters.AdapterCellphone
-import com.xr6software.cellphonegallery.ui.main.adapters.AdapterCellphoneClickListener
 import com.xr6software.cellphonegallery.ui.main.dialogs.CellphoneDialog
 import com.xr6software.cellphonegallery.viewmodels.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +24,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var viewBinding: ActivityMainBinding
     private lateinit var cellphoneAdapter: AdapterCellphone
@@ -41,8 +40,11 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
         setContentView(view)
 
         supportActionBar?.title = resources.getString(R.string.topbar_text)
-        cellphoneAdapter = AdapterCellphone(this)
+
         val recyclerView: RecyclerView = viewBinding.maItemsViewHolder
+        cellphoneAdapter = AdapterCellphone() {
+                cellphone, position -> onItemClick(cellphone, position)
+        }
 
         recyclerView.apply {
             layoutManager = GridLayoutManager(context, 1)
@@ -82,7 +84,7 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
     }
 
     private suspend fun showErrorAndFinish() {
-        var toast = Toast.makeText(
+        val toast = Toast.makeText(
             applicationContext,
             resources.getString(R.string.error_loading),
             Toast.LENGTH_LONG
@@ -93,7 +95,7 @@ class MainActivity : AppCompatActivity(), AdapterCellphoneClickListener {
         finish()
     }
 
-    override fun onClick(cellphone: Cellphone, position: Int) {
+    private fun onItemClick(cellphone: Cellphone, position: Int) {
         if ((!cellphoneDialog.isShown) ) {
             viewModel.loadCellphoneInfo(position)
             cellphoneDialog.isShown = true

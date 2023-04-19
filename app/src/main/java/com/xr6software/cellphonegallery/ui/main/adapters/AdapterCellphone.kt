@@ -18,7 +18,9 @@ import com.xr6software.cellphonegallery.model.Cellphone
 This is class extends Recycler view. Adapter to parse data from the cellphones list to the listview items
  */
 
-class AdapterCellphone(private val adapterCellphoneClickListener: AdapterCellphoneClickListener) : RecyclerView.Adapter<AdapterCellphone.ViewHolder>() {
+class AdapterCellphone(
+    private val clickListener : (Cellphone, Int) -> Unit
+) : RecyclerView.Adapter<AdapterCellphone.ViewHolder>() {
 
     var cellphoneList = ArrayList<Cellphone>()
 
@@ -49,7 +51,7 @@ class AdapterCellphone(private val adapterCellphoneClickListener: AdapterCellpho
             error(com.google.android.material.R.drawable.mtrl_ic_error)
         }
         holder.itemView.setOnClickListener {
-            adapterCellphoneClickListener.onClick(cellphone, position)
+            clickListener(cellphone, position)
         }
     }
 
