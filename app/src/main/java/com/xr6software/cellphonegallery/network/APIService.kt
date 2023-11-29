@@ -12,9 +12,12 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONObject
-import org.xml.sax.helpers.DefaultHandler
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -22,28 +25,63 @@ import kotlin.coroutines.suspendCoroutine
 /**
  *
  * @author Hernán Carrera
- * @version "1.1"
+ * @version "1.2"
  * @param context via Hilt Injection
- * This class provides connection with the API web service using Volley Library
+ * This class provides connection with the API web service using Retrofit Library
  */
 
 @InstallIn(SingletonComponent::class)
 @Module
 class APIService @Inject constructor(@ApplicationContext val context: Context) {
 
-    private val requestQueue = Volley.newRequestQueue(context)
-    private val cellphoneListUrl = NetworkConstants.URL_CELLPHONE_LIST
-    private val cellphoneDetailUrl = NetworkConstants.URL_CELLPHONE_DETAIL
+    private val okHttpClient = OkHttpClient.Builder()
+        .connectTimeout(TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
+        .readTimeout(TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
+        .writeTimeout(TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
+        .retryOnConnectionFailure(true)
+        .build()
 
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(NetworkConstants.RETROFIT_BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val apiService = retrofit.create(CellphoneApiService::class.java)
     companion object {
         const val TIMEOUT = 10000
         const val MAX_RETRIES = 3
     }
 
+    suspend fun getCellphonesFromApiRetrofit(): ApiResponse<List<Cellphone>> {
+        return try {
+            val response = apiService.getCellphones()
+            ApiResponse(null, response.body())
+        } catch (e: Exception) {
+            ApiResponse(e.message.toString(), null)
+        }
+    }
+
+    suspend fun getCellphoneFromApiRetrofit(cellphoneId: Int): ApiResponse<Cellphone> {
+        return try {
+            val response = apiService.getCellphone(cellphoneId)
+            ApiResponse(null, response.body())
+        } catch (e: Exception) {
+            ApiResponse(e.message.toString(), null)
+        }
+    }
+
+
+
+    private val requestQueue = Volley.newRequestQueue(context)
+    private val cellphoneListUrl = NetworkConstants.URL_CELLPHONE_LIST
+    private val cellphoneDetailUrl = NetworkConstants.URL_CELLPHONE_DETAIL
+
     /**
      * This method gets the cellphones list from ApiService.
      * @return ApiResponse with CellphoneList object / Error msg
      */
+    @Deprecated("Use retrofit methods")
     suspend fun getCellphonesFromApi() : ApiResponse<List<Cellphone>> =
         suspendCoroutine { continuation ->
             var apiResponse : ApiResponse<List<Cellphone>>
@@ -67,6 +105,7 @@ class APIService @Inject constructor(@ApplicationContext val context: Context) {
      * This method returns a cellphone detail given an id from ApiService.
      * @return ApiResponse with CellphoneDetail object / Error msg
      */
+    @Deprecated("Use retrofit methods")
     suspend fun getCellphoneFromApi(cellphoneId: Int) : ApiResponse<Cellphone> =
         suspendCoroutine { continuation ->
             var apiResponse : ApiResponse <Cellphone>

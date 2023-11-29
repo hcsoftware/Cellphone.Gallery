@@ -19,7 +19,7 @@ class CellphoneRepositoryImp @Inject constructor(
      *  @return List<Cellphone>
      */
     override suspend fun getCellphonesList(): RepositoryStatus<List<Cellphone>> {
-        val apiResponse = apiService.getCellphonesFromApi()
+        val apiResponse = apiService.getCellphonesFromApiRetrofit()
         return if (apiResponse.error.isNullOrBlank()) {
             RepositoryStatus.Success(apiResponse.values)
         } else {
@@ -33,7 +33,7 @@ class CellphoneRepositoryImp @Inject constructor(
      *  @return Cellphone object
      */
     override suspend fun getCellphoneDetail(cellphoneId: Int): RepositoryStatus<Cellphone> {
-        val apiResponse = apiService.getCellphoneFromApi(cellphoneId)
+        val apiResponse = apiService.getCellphoneFromApiRetrofit(cellphoneId)
         return if (apiResponse.error.isNullOrBlank()) {
             RepositoryStatus.Success(apiResponse.values)
         } else {
