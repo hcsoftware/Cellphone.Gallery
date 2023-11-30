@@ -12,7 +12,7 @@ Use cases:
 Implements:<br></p>
 <ul>
 <li>Dagger Hilt for dependency injection</li>
-<li>Volley library for API request</li>
+<li>Retrofit library for API request</li>
 <li>Gson library to handle JSON objects</li>
 <li>Coil library to load Images. This library uses coroutines</li>
 <li>DiffUtil in RecyclerView</li>
